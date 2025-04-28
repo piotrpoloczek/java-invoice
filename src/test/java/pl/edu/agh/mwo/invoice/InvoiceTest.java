@@ -150,4 +150,27 @@ public class InvoiceTest {
         int number2 = new Invoice().getNumber();
         Assert.assertThat(number1, Matchers.lessThan(number2));
     }
+
+    @Test
+    public void testPrintInvoiceWithProducts() {
+        invoice.addProduct(new TaxFreeProduct("Chleb", new BigDecimal("5")), 2);
+        invoice.addProduct(new DairyProduct("Ser", new BigDecimal("10")), 1);
+
+        String printedInvoice = invoice.print();
+
+        Assert.assertTrue(printedInvoice.contains("Faktura nr: " + invoice.getNumber()));
+        Assert.assertTrue(printedInvoice.contains("Chleb, liczba sztuk: 2, cena: 5"));
+        Assert.assertTrue(printedInvoice.contains("Ser, liczba sztuk: 1, cena: 10"));
+        Assert.assertTrue(printedInvoice.contains("Liczba pozycji: 2"));
+    }
+
+    @Test
+    public void testPrintEmptyInvoice() {
+        String printedInvoice = invoice.print();
+
+        Assert.assertTrue(printedInvoice.contains("Faktura nr: " + invoice.getNumber()));
+        Assert.assertTrue(printedInvoice.contains("Liczba pozycji: 0"));
+    }
+
+
 }
