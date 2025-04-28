@@ -184,4 +184,21 @@ public class InvoiceTest {
         Assert.assertTrue(printedInvoice.contains("Jablko, liczba sztuk: 5, cena: 2.50"));
         Assert.assertTrue(printedInvoice.contains("Liczba pozycji: 1"));
     }
+
+    @Test
+    public void testBottleOfWineTaxIncludesExcise() {
+        Product wine = new BottleOfWine("Wino czerwone", new BigDecimal("20.00"));
+        invoice.addProduct(wine);
+
+        Assert.assertThat(new BigDecimal("10.16"), Matchers.comparesEqualTo(invoice.getTaxTotal()));
+    }
+
+    @Test
+    public void testFuelCanisterTaxIncludesExcise() {
+        Product fuel = new FuelCanister("Benzyna", new BigDecimal("100.00"));
+        invoice.addProduct(fuel);
+
+        Assert.assertThat(new BigDecimal("28.56"), Matchers.comparesEqualTo(invoice.getTaxTotal()));
+    }
+
 }
